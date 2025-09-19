@@ -18,11 +18,13 @@ import (
 )
 
 var (
-	configFile          string
-	privateKey          string
-	privateKeyFile      string
-	privateKeyID        string
-	fishermanPrivateKey string
+	configFile              string
+	privateKey              string
+	privateKeyFile          string
+	privateKeyID            string
+	fishermanPrivateKey     string
+	fishermanPrivateKeyFile string
+	fishermanPrivateKeyID   string
 )
 
 func Command() *cobra.Command {
@@ -41,6 +43,8 @@ func Command() *cobra.Command {
 	cmd.Flags().StringVar(&privateKeyID, "ethereum.private-key-id", "", "The secret id to lookup the private key in AWS Secrets Manager")
 
 	cmd.Flags().StringVar(&fishermanPrivateKey, "substrate.private-key", "", "substrate private key")
+	cmd.Flags().StringVar(&fishermanPrivateKeyFile, "substrate.private-key-file", "", "The file from which to read the substrate private key")
+	cmd.Flags().StringVar(&fishermanPrivateKeyID, "substrate.private-key-id", "", "The secret id to lookup the substrate private key in AWS Secrets manager")
 
 	return cmd
 }
@@ -70,7 +74,7 @@ func run(_ *cobra.Command, _ []string) error {
 		return err
 	}
 
-	keypair2, err := para.ResolvePrivateKey(fishermanPrivateKey, "", "")
+	keypair2, err := para.ResolvePrivateKey(fishermanPrivateKey, fishermanPrivateKeyFile, fishermanPrivateKeyID)
 	if err != nil {
 		return err
 	}
